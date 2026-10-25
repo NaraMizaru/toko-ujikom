@@ -1,0 +1,43 @@
+services:
+  mysql:
+    restart: always
+    container_name: toko_ujikom.mysql.local
+    image: mysql:8.2
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: toko_ujikom
+    volumes:
+      - 'mysql:/var/lib/mysql'
+    networks:
+      - toko_ujikom
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
+      retries: 3
+      timeout: 5s
+
+  web:
+    restart: always
+    container_name: toko_ujikom.web.local
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+#    image: ${DOCKER_REGISTRY}/web:${IMAGE_VERSION}
+    user: "${UID:-1000}:${GID:-1000}"
+    ports:
+      - "${DOCKER_PORT:-127.0.0.1:8000}:8000"
+    volumes:
+      - ".:/opt/apps/toko_ujikom"
+    depends_on:
+      - mysql
+    networks:
+      - toko_ujikom
+networks:
+  toko_ujikom:
+    name: toko_ujikom.local
+    driver: bridge
+
+volumes:
+  mysql:
+    name: toko_ujikom.mysql.local
+  redis:
+    name: toko_ujikom.redis.local
