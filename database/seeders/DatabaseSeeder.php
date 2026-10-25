@@ -27,36 +27,38 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@ex.com',
             'password' => bcrypt('admin'),
-            'role' => 'admin'
+            'role' => 'admin',
+            'no_hp' => '081234567890',
         ]);
 
         User::create([
             'name' => 'customer',
             'email' => 'customer@ex.com',
             'password' => bcrypt('customer'),
-            'role' => 'customer'
+            'role' => 'customer',
+            'no_hp' => '081234567891',
         ]);
 
         Kategori::create([
-            'name' => 'VGA'
+            'name' => 'VGA',
         ]);
 
         Kategori::create([
-            'name' => 'Motherboad'
+            'name' => 'Motherboad',
         ]);
 
         Produk::create([
             'kategori_id' => 1,
             'name' => 'VGA RTX 4090',
             'harga' => '250000',
-            'foto' => 'img/rtx4090.jpg'
+            'foto' => 'img/rtx4090.jpg',
         ]);
 
         Produk::create([
             'kategori_id' => 2,
             'name' => 'Motherboard Z790',
             'harga' => '200000',
-            'foto' => 'img/z790.jpg'
+            'foto' => 'img/z790.jpg',
         ]);
     }
 }

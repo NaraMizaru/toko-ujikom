@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'no_hp',
     ];
 
     /**
@@ -43,8 +44,28 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function transaksi()
+    public function transaksis()
     {
-        return $this->belongsTo(Transaksi::class);
+        return $this->hasMany(Transaksi::class);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function whatsappNumber(): ?string
+    {
+        if (! $this->no_hp) {
+            return null;
+        }
+
+        $phone = preg_replace('/[^0-9]/', '', $this->no_hp);
+
+        if ($phone === '') {
+            return null;
+        }
+
+        return str_starts_with($phone, '0') ? '62'.substr($phone, 1) : $phone;
     }
 }
